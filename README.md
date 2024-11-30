@@ -1,4 +1,4 @@
-# ** Active Learning for GNN**
+# Active Learning for GNN
 
 This repository implements an active learning pipeline to improve the performance of a custom graph neural network (GNN) using the QM9 dataset. The project also integrates a pretrained model for pseudo-labeling to guide the active learning process.
 
