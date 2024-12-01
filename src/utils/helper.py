@@ -34,14 +34,20 @@ def get_data_split(dataset, train_size, val_size, test_size):
   return train_dataset, val_dataset, test_dataset
   
 
-def split_dataset(dataset, initial_size):
+def split_dataset(dataset, initial_size, test_set_size):
     
     # Split the dataset into an initial labeled set and an unlabeled set.
     
-    total_size = len(dataset)
-    labeled_size = initial_size
-    unlabeled_size = total_size - labeled_size
+    # Calculate the test set size as an integer
+    test_set_size = int(len(dataset) * test_set_size)
+    remaining_size = len(dataset) - test_set_size
 
-    labeled_set, unlabeled_set = random_split(dataset, [labeled_size, unlabeled_size])
+    # First split: test set and remaining set
+    test_set, remaining_set = random_split(dataset, [test_set_size, remaining_size])
 
-    return labeled_set, unlabeled_set
+    # Second split: labeled set and unlabeled set from the remaining set
+    labeled_set_size = initial_size
+    unlabeled_set_size = remaining_size - labeled_set_size
+    labeled_set, unlabeled_set = random_split(remaining_set, [labeled_set_size, unlabeled_set_size])
+
+    return labeled_set, unlabeled_set, test_set

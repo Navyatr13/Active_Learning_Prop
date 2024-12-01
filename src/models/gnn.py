@@ -1,5 +1,5 @@
 import torch
-from torch.nn import Linear, ReLU
+from torch.nn import Linear, ReLU, Dropout
 from torch_geometric.nn import GCNConv, global_mean_pool
 import pytorch_lightning as pl
 from torchmetrics import MeanAbsoluteError
@@ -21,7 +21,7 @@ class CustomGNN(pl.LightningModule):
 
         # Activation function
         self.relu = ReLU()
-        
+        self.dropout = Dropout(0.2)
         # Loss function
         self.criterion = MeanAbsoluteError() #torch.nn.L1Loss() 
         
@@ -32,13 +32,16 @@ class CustomGNN(pl.LightningModule):
     def forward(self, x, edge_index, batch):
         # GCN layers
         x = self.relu(self.conv1(x, edge_index))
+        x = self.dropout(x)
         x = self.relu(self.conv2(x, edge_index))
+        x = self.dropout(x) 
 
         # Global pooling
         x = global_mean_pool(x, batch)
 
         # Fully connected layers
         x = self.relu(self.fc1(x))
+        x = self.dropout(x) 
         x = self.fc2(x)
         return x
         
@@ -46,6 +49,7 @@ class CustomGNN(pl.LightningModule):
         # Forward pass
         pred = self(batch.x, batch.edge_index, batch.batch).view(-1)
         target = batch.y[:, self.hparams.output_dim]
+        #print(pred.shape, target.shape)
         loss = self.criterion(pred, target)
         batch_size = batch.batch.max().item() + 1
         # Logging the training loss

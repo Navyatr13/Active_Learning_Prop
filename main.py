@@ -39,7 +39,7 @@ def active_learning_main(batch_size, num_cycles):
     hidden_dim = 128
     output_dim = 1
     checkpoint_path = None
-
+    
     # Initialize models
     custom_model = load_custom_model(input_dim, hidden_dim, output_dim, checkpoint_path, device)
     pretrained_model, _ = load_pretrained_model(dataset, TARGET, HOME, device)
