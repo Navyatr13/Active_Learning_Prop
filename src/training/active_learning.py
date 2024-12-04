@@ -88,7 +88,7 @@ def active_learning_loop(custom_model, pretrained_model, dataset, batch_size, nu
 
         selected_indices = [pair[2] for pair in uncertainty_sample_pairs[:batch_size]]
     
-        # Pseudo-Labeling
+        # Pseudo-Labeling from pretrained model
         pseudo_labels = label_with_pretrained(pretrained_model, DataLoader(most_uncertain_samples, batch_size=batch_size), device)
         
         for sample, pseudo_label in zip(most_uncertain_samples, pseudo_labels):
@@ -99,7 +99,7 @@ def active_learning_loop(custom_model, pretrained_model, dataset, batch_size, nu
         unlabeled_set = [sample for i, sample in enumerate(unlabeled_set) if i not in selected_indices]
 
 
-        # Step 9: Log Metrics
+        # Log Metrics in to csv files for monitoring the len of datasets
         with open("active_learning_metrics.csv", "a") as csv_file:
             writer = csv.writer(csv_file)
             writer.writerow([cycle + 1, len(labeled_set), test_mae])
