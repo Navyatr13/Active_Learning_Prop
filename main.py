@@ -11,7 +11,6 @@ from torch_geometric.loader import DataLoader
 from pytorch_lightning import Trainer
 
 # Import project-specific modules
-from entalpic_al import HOME, TARGET
 from src.data.dataset import load_qm9_data
 from src.models.pretrained import load_pretrained_model
 from src.training.active_learning import active_learning_loop
