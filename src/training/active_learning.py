@@ -99,7 +99,7 @@ def active_learning_loop(custom_model, pretrained_model, dataset, batch_size, nu
         unlabeled_set = [sample for i, sample in enumerate(unlabeled_set) if i not in selected_indices]
 
 
-        # Step 9: Log Metrics
+        # Log Metrics
         with open("active_learning_metrics.csv", "a") as csv_file:
             writer = csv.writer(csv_file)
             writer.writerow([cycle + 1, len(labeled_set), test_mae])
